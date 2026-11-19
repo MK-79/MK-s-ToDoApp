@@ -1,6 +1,7 @@
 # TodoApp
 
-React、TypeScript、Tailwind CSS を使用し、ローカルストレージでデータを永続化した「Todoアプリ」です。
+React、TypeScript、Tailwind CSS を使用し、ローカルストレージでデータを永続化した「Todoアプリ」です。ma
+
 
 ## 開発履歴
 
