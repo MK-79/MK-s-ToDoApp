@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRef } from "react";
 import type { ChangeEvent } from "react";
 import type { Todo } from "./types";
 import { initTodos } from "./initTodos";
@@ -11,6 +12,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 const localStorageKey = "TodoApp";
+
+const REWARDS = [
+  "飲み物を飲み10分間リラックス",
+  "30分間だけ動画を見る",
+  "お菓子を食べ15分リラックス",
+  "ストレッチをして体を伸ばす",
+  "5分間目を閉じて休憩する ",
+  "好きな音楽を3曲聴く ",
+];
 
 type StoredTodo = {
   id: string;
@@ -48,15 +58,32 @@ const App = () => {
   const [newTodoDeadline, setNewTodoDeadline] = useState<Date | null>(null);
   const [isNameTouched, setIsNameTouched] = useState(false);
 
+  const [targetPriority, setTargetPriority] = useState(1);
+  const [pickedTodoId, setPickedTodoId] = useState<string | null>(null);
+  const [pickMessage, setPickMessage] = useState("");
+  const [rewardMessage, setRewardMessage] = useState<string | null>(null);
+
   const uncompletedCount = todos.filter((todo) => !todo.isDone).length;
   const completedCount = todos.length - uncompletedCount;
   const newTodoNameError = getTodoNameError(newTodoName);
   const isNewTodoNameInvalid = newTodoNameError !== "";
   const showNewTodoNameError = isNameTouched && isNewTodoNameInvalid;
 
+  const pickedTodo =
+    todos.find((todo) => todo.id === pickedTodoId && !todo.isDone) ?? null;
+  const prevCompletedCount = useRef(completedCount);
+
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(todos));
   }, [todos]);
+
+  useEffect(() => {
+    if (completedCount > prevCompletedCount.current) {
+      const randomIndex = Math.floor(Math.random() * REWARDS.length);
+      setRewardMessage(REWARDS[randomIndex]);
+    }
+    prevCompletedCount.current = completedCount;
+  }, [completedCount]);
 
   const updateNewTodoName = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTodoName(e.target.value);
@@ -112,15 +139,92 @@ const App = () => {
     setTodos((currentTodos) => currentTodos.filter((todo) => todo.id !== id));
   };
 
+  const pickRandomTodo = () => {
+    const candidates = todos.filter(
+      (todo) => !todo.isDone && todo.priority === targetPriority,
+    );
+
+    if (candidates.length === 0) {
+      setPickedTodoId(null);
+      setPickMessage(`優先度 ${targetPriority} の未完了タスクはありません。`);
+      return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * candidates.length);
+    setPickedTodoId(candidates[randomIndex].id);
+    setPickMessage("");
+  };
+
   return (
     <div className="mx-4 mt-10 max-w-2xl md:mx-auto">
       <h1 className="mb-4 text-2xl font-bold">TodoApp</h1>
       <div className="mb-4">
         <WelcomeMessage
-          name="寝屋川タヌキ"
+        name="ユーザー"
           uncompletedCount={uncompletedCount}
         />
       </div>
+
+      {rewardMessage && (
+        <div
+          role="status"
+          className="mb-4 flex items-center justify-between rounded-md border border-amber-300 bg-amber-50 p-3 text-amber-900 drop-shadow-sm"
+        >
+          <div>
+            <span className="font-bold"> タスク完了！ご褒美：</span>
+            <span>{rewardMessage}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setRewardMessage(null)}
+            aria-label="ご褒美メッセージを閉じる"
+            className="ml-2 cursor-pointer rounded px-2 py-0.5 text-sm font-bold text-amber-700 hover:bg-amber-200"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
+      <div className="mb-4 rounded-md border border-slate-300 bg-white p-3 drop-shadow-sm">
+        <div className="flex flex-wrap items-center gap-2">
+          <label htmlFor="targetPriority" className="text-sm font-bold">
+            優先度
+          </label>
+          <select
+            id="targetPriority"
+            value={targetPriority}
+            onChange={(e) => {
+              setTargetPriority(Number(e.target.value));
+              setPickMessage("");
+            }}
+            className="cursor-pointer rounded-md border border-gray-300 bg-white px-2 py-1 text-sm"
+          >
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+          </select>
+          <span className="text-sm">の中から</span>
+          <button
+            type="button"
+            onClick={pickRandomTodo}
+            className="cursor-pointer rounded-md bg-indigo-500 px-3 py-1 text-sm font-bold text-white hover:bg-indigo-600"
+          >
+            ランダムに1つ選ぶ 
+          </button>
+        </div>
+
+        {pickedTodo && (
+          <div className="mt-2 rounded-md border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm">
+            今やるタスク：
+            <span className="font-bold text-indigo-700">{pickedTodo.name}</span>
+          </div>
+        )}
+
+        {pickMessage && (
+          <div className="mt-2 text-sm text-slate-600">{pickMessage}</div>
+        )}
+      </div>
+
       <TodoList todos={todos} updateIsDone={updateIsDone} remove={remove} />
 
       <button
