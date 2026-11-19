@@ -1,33 +1,37 @@
-# TodoApp
+# プロジェクト名
 
-React、TypeScript、Tailwind CSS を使用し、ローカルストレージでデータを永続化した「Todoアプリ」です。masa
+日々のタスクを少し楽しく管理するToDoアプリの開発
 
+## 主な機能
+* 機能1 タスクの追加と削除
+* 機能2 タスクの完了、未完了の可視化
+* 機能3 タスクのランダム選択
+* 機能4 タスク完了時の報酬
 
+## 使用技術
+*TypeScript、React、Tailwind CSS、tailwind-merge、Day.js、uuid、Font Awesome、localStorage、WAI-ARIA
 
-## 開発履歴
+## 備考
+*普段私は課題が溜まってしまうことがよくあり、何の課題を優先すべきかわからなくなります。そこで課題を管理するアプリを作れば課題が溜まるのを防ぎ、効率よく課題をこなすことができると考えました。
 
-- 2026年10月16日：プロジェクト開始
+そこで機能2までのアプリを作りましたが何か物足りないと感じました。また、私はゲームが好きでランダム要素があるガチャが一番好きでした。そこで課題をやるにも楽しみたいと感じ機能3、4を実装しました。
 
-## ライセンス
+機能3は
+![Todoアプリの画面](./images/1.png)
+課題それぞれに決めた優先度が同じものの中からランダムに選んでくれます。
+実際の画像がこちらです。
+![Todoアプリの画面](./images/2.png)
+![Todoアプリの画面](./images/3.png)
+このように課題が多く何からやればわからない時や、何でもいいからやるというときにワクワクしながら使うことができます。
 
-MIT License
+機能4は
+![Todoアプリの画面](./images/4.png)
+![Todoアプリの画面](./images/5.png)
+このようにタスクが完了するとランダムにご褒美がもらえます。基本的には休憩ですがあたりとはずれがあります。
+この機能は課題を終えた達成感とともに次の課題に取り組むモチベーションにつながります。
 
-Copyright (c) 2026 MK-79
+自分はかなり長く集中することができますがその分休憩を少し長めにとるので少しずつ疲れがたまっていってしまいます。
+そんな時にこのような機能があるおかげでそのような疲れを少しでも緩和し、楽しく課題に取り組めるので本当に作ってよかったです。
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+## 作成期間
+10/16~11/19
